@@ -1,0 +1,44 @@
+defaults:  
+  - _self_  
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+experiment_meta:
+  experiment_name: JaxDREDQ
+  track: true
+  wandb_project_name: JaxDREDQ
+  wandb_group_name: !!null # Default: !!null
+env_id: CarEnv-LidarParking-v1 # Default: CarEnv-LidarParking-v1, SafetyPointGoal3Gymnasium-v0
+# seed: 0
+total_timesteps: 1000000 # Default: 1000000
+max_episode_steps: 300 # Default: 300 (CarEnv + SafetyPointGoal3Gymnasium), 1000 (every other SafetyGymnasium Env)
+buffer_size: 300000 # 300000
+cost_mode: buffer_zone_v2 # Default: buffer_zone_v2
+cost_buffer_radius: 0.3 # Default: 0.3
+confidence_level: 0.25 # (0, 1]
+gamma: 0.99 # Default: 0.99
+batch_size: 128 # Default: 128
+update_to_data_ratio: 10 # L, Default: 10 (DSAC), 20 (DREDQ)
+learning_starts: 5000 # Default: 5000
+logging_frequency: 100 # Default: 100
+eval_tries: 1 # Default: 1
+eval_episode_frequency: 25000 # Default: 25000 WARNING! If this value is to small the video logging will eat up all the memory
+entropy_coeff: auto # Default: auto | Set to fixed entropy coefficient value if should not be tuned automatically
+actor:
+  policy_lr: 0.0003 # Default: 0.0003
+critic:
+  ensemble_size: 10 # N, Default: 2 (DSAC), 10 (DREDQ)
+  ensemble_sample_size: 2 # M, Default: 2 (DSAC), 2 (DREDQ)
+  num_iota_samples: 32 # H, Default: 32
+  embedding_dim: 512
+  quantile_huber_loss_kappa: 0.01 # Default: 0.01
+  q_lr: 0.0003 # Default: 0.0003
+  tau: 0.005 # Default: 0.005
+# Uncomment the following lines to use Saute RL
+# saute:
+#   cost_budget: 10.0
+#   gamma: 0.99 # Default: 0.99
+# no_termination: True

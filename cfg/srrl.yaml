@@ -1,0 +1,89 @@
+defaults:  
+  - _self_  
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+experiment_meta:
+  experiment_name: JaxSRRL
+  track: true
+  wandb_project_name: JaxSRRL
+  wandb_group_name: !!null # Default: !!null
+env_id: CarEnv-ResetlessLidarParking-v1 # Default: CarEnv-ResetlessLidarParking-v1
+# seed: 0
+total_timesteps: 3000000 # Default: 3000000
+cost_mode: buffer_zone_v2 # Default: buffer_zone_v2
+cost_buffer_radius: 0.3 # Default: 0.3
+reset_reward_type: lnt_sparse # Default: "lnt_sparse"
+reset_thresh: 0.1 # Threshold for the reset agent to trigger a reset, Default: 0.1
+n_step_violation_causality: 50 # Default: 50 | For how many steps into the reset agent the forward agent is assumed to be the cause of the violation
+min_forward_step_per_episode: 15 # Minimum number of steps the forward agent has to take per episode before the episode can be aborted by the reset agent, Default: 15
+learning_starts: 5000 # Warmup phase length, Default: 5000
+logging_frequency: 250 # Non-Evaluation logging frequency, Default: 250
+eval_tries: 1 # Number of episodes during evaluation, Default: 1
+eval_episode_frequency: 100000 # Default: 50000 WARNING! If this value is to large the video logging will eat up all the memory
+
+forward_agent:
+  algorithm: DREDQ # Default: DREDQ
+  buffer_size: 300000
+  max_episode_steps: 300 # Default: 300
+  example_count: 200 # Default: 200
+  risk_level: 0.5 # Only relevant to WCSAC, (0, 1], Default: 0.5
+  confidence_level: 0.25 # Only relevant to DSAC/DREDQ (0, 1], Default: 0.25
+  cost_limit: 1.0 #0.99
+  damp_scale: 10 # Only relevant to WCSAC, Default: 10
+  gamma: 0.99 # Default: 0.99
+  batch_size: 128 # Default: 128
+  update_to_data_ratio: 10 # L, Default: 1 (SAC/DSAC/WCSAC/EBSAC), 10 (REDQ/DREDQ)
+  rnd:
+    predictor_lr: 0.00003 # Default: 0.00003 
+    embedding_dim: 128 # Default: 128
+    batch_size: 32 # Default: 32
+    beta: 0.0 # Default: 1.0
+  entropy_coeff: auto # Default: auto | Set to fixed entropy coefficient value if should not be tuned automatically
+  actor:
+    policy_lr: 0.0003 # Default: 0.0003
+  critic:
+    ensemble_size: 10 # N, Default: 2 (SAC/DSAC/WCSAC/EBSAC), 10 (REDQ/DREDQ)
+    ensemble_sample_size: 2 # M, Default: 2 (SAC/DSAC/WCSAC/EBSAC), 2 (REDQ/DREDQ)
+    quantile_huber_loss_kappa: 0.01 # Default: 0.01 (DSAC/DREDQ)
+    num_iota_samples: 32 # H, Default: 32
+    embedding_dim: 512 # Default: 512
+    q_lr: 0.0003 # Default: 0.0003
+    tau: 0.005 # Default: 0.005
+    success_target_scaling: 1.0 # Default: 1.0
+  omega:
+    lr: 0.0006 #0.0003
+reset_agent:
+  algorithm: ExampleBasedSAC # Default: ExampleBasedSAC
+  buffer_size: 300000 # Default: 300000
+  max_episode_steps: 300 # Default: 300 (CarEnv + SafetyPointGoal3Gymnasium), 1000 (every other SafetyGymnasium Env)
+  example_count: 200 # Default: 200
+  risk_level: 0.5 # Only relevant to WCSAC, (0, 1], Default: 0.5
+  confidence_level: 0.25 # Only relevant to DSAC/DREDQ (0, 1], Default: 0.25
+  cost_limit: 1.0 #0.99
+  damp_scale: 10 # Only relevant to WCSAC, Default: 10
+  gamma: 0.99 # Default: 0.99
+  batch_size: 128 # Default: 128
+  update_to_data_ratio: 1 # L, Default: 1 (SAC/DSAC/WCSAC/EBSAC), 20 (REDQ/DREDQ)
+  rnd:
+    predictor_lr: 0.00003 # Default: 0.00003 
+    embedding_dim: 128 # Default: 128
+    batch_size: 32 # Default: 32
+    beta: 0.0 # Default: 1.0
+  entropy_coeff: auto # Default: auto | Set to fixed entropy coefficient value if should not be tuned automatically
+  actor:
+    policy_lr: 0.0003 # Default: 0.0003
+  critic:
+    ensemble_size: 2 # N, Default: 2 (SAC/DSAC/WCSAC/EBSAC), 10 (REDQ/DREDQ)
+    ensemble_sample_size: 2 # M, Default: 2 (SAC/DSAC/WCSAC/EBSAC), 2 (REDQ/DREDQ)
+    quantile_huber_loss_kappa: 1.0
+    num_iota_samples: 32 # H, Default: 32
+    embedding_dim: 512 # Default: 512
+    q_lr: 0.0003 # Default: 0.0003
+    tau: 0.005 # Default: 0.005
+    success_target_scaling: 1.0 # Default: 1.0
+  omega:
+    lr: 0.0006 #0.0003
