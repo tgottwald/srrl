@@ -1,6 +1,6 @@
 # Safe Resetless Reinforcement Learning (SRRL)
 
-Official Implementation of our paper _Safe Resetless Reinforcement Learning: Enhancing Training Autonomy with Risk-Averse Agents_.
+Official Implementation of our paper [Safe Resetless Reinforcement Learning: Enhancing Training Autonomy with Risk-Averse Agents](https://www.tnt.uni-hannover.de/papers/data/1746/Safe_Resetless_Reinforcement_Learning.pdf).
 
 >Training Reinforcement Learning agents directly in any real-world environment remains difficult, as such scenarios entail the risk of damaging the training setup or violating other safety constraints. The training process itself further requires extensive human supervision and intervention to reset the environment after each episode. Thus, we propose an innovative Safe Reinforcement Learning framework that combines Safe and Resetless RL to autonomously reset environments, while also reducing the number of safety constraint violations. In this context, we develop a novel risk-averse RL agent suitable for stringent safety constraints by combining Safe RL, Distributional RL, and Randomized Ensembled Double Q-Learning. Experiments conducted in a novel mobile robotics scenario indicate that our Safe Resetless RL framework reduces the number of human interactions required during training compared to state-of-the-art methods, filling a gap in current problem formulations and enhancing the autonomy of RL training processes in real-world settings.
 
@@ -60,3 +60,18 @@ python3 train_jax_srrl.py
 ```
 
 Please note that we have used [W&B](https://wandb.ai/) for logging, so you may require an account to log output without modifications to the code.
+
+
+## Citing
+
+Please cite this work as:
+
+```bibtex
+@inproceedings { GotSch2024,
+  author = {Tristan Gottwald and Maximilian Schier and Bodo Rosenhahn},
+  title = {Safe Resetless Reinforcement Learning: Enhancing Training Autonomy with Risk-Averse Agents},
+  booktitle = {European Conference on Computer Vision Workshops (ECCVW)},
+  year = {2024},
+  month = oct
+}
+```
